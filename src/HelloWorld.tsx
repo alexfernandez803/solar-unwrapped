@@ -11,6 +11,7 @@ import {Subtitle} from './HelloWorld/Subtitle';
 import {Title} from './HelloWorld/Title';
 import {z} from 'zod';
 import {zColor} from '@remotion/zod-types';
+import {useFont} from './hooks/use-font';
 
 export const myCompSchema = z.object({
 	titleText: z.string(),
@@ -18,6 +19,8 @@ export const myCompSchema = z.object({
 	logoColor1: zColor(),
 	logoColor2: zColor(),
 });
+
+const fontFamily = 'CarterOne-Regular';
 
 export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
 	titleText: propOne,
@@ -28,6 +31,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
 	const frame = useCurrentFrame();
 	const {durationInFrames, fps} = useVideoConfig();
 
+	useFont('CarterOne-Regular');
 	// Animate from 0 to 1 after 25 frames
 	const logoTranslationProgress = spring({
 		frame: frame - 25,
@@ -57,7 +61,7 @@ export const HelloWorld: React.FC<z.infer<typeof myCompSchema>> = ({
 
 	// A <AbsoluteFill> is just a absolutely positioned <div>!
 	return (
-		<AbsoluteFill style={{backgroundColor: 'white'}}>
+		<AbsoluteFill style={{backgroundColor: 'white', fontFamily}}>
 			<AbsoluteFill style={{opacity}}>
 				<AbsoluteFill style={{transform: `translateY(${logoTranslation}px)`}}>
 					<Logo logoColor1={logoColor1} logoColor2={logoColor2} />
