@@ -2,6 +2,9 @@
 	"name": "solar-unwrapped",
 	"version": "1.0.0",
 	"description": "My Remotion video",
+	"sideEffects": [
+		"*.css"
+	],
 	"scripts": {
 		"start": "remotion studio",
 		"build": "remotion render HelloWorld out/video.mp4",
@@ -17,6 +20,7 @@
 		"@remotion/layout-utils": "4.0.100",
 		"@remotion/paths": "4.0.100",
 		"@remotion/shapes": "4.0.100",
+		"@remotion/tailwind": "4.0.100",
 		"@remotion/zod-types": "4.0.100",
 		"d3": "^7.8.5",
 		"lightweight-charts": "^4.1.2",

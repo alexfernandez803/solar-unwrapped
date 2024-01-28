@@ -41,7 +41,7 @@ export const SolarPercentageComposition: React.FC = () => {
 					flexDirection: 'column',
 					padding: 30,
 				}}
-				className="flex flex-col space-y-4"
+				className="flex flex-col space-4"
 			>
 				<Pie percentage={change} colour="rgb(10, 131, 242)" />
 				<ConsumptionLevel unit="kWH" value={2.81} title="In-House" />
