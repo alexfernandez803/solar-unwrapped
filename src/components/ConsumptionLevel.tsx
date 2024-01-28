@@ -5,8 +5,9 @@ const fontSize = 50;
 
 export const ConsumptionLevel: React.FC<{
 	title: string;
-	subtitle: string;
-}> = ({title, subtitle}) => {
+	unit: string;
+	value: number;
+}> = ({title, unit, value}) => {
 	return (
 		<div
 			style={{
@@ -29,10 +30,10 @@ export const ConsumptionLevel: React.FC<{
 					transform: 'translateY(3px)',
 				}}
 			>
-				{subtitle}
+				{title}
 			</div>
 			<div style={{border: '3px solid #0A83F2', whiteSpace: 'pre', padding: 7}}>
-				{title}
+				{value} {unit}
 			</div>
 		</div>
 	);

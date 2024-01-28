@@ -11,7 +11,6 @@ export type LogicalSelection = {
 const SolarChartComposition: React.FC<TradingChartProps> = ({
 	data,
 	userSelection,
-	token,
 	theme,
 }) => {
 	const frame = useCurrentFrame();

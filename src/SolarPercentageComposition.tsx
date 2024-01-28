@@ -34,19 +34,20 @@ export const SolarPercentageComposition: React.FC = () => {
 		>
 			<div
 				style={{
-					border: '4px solid rgb(10, 131, 242)',
+					//border: '4px solid rgb(10, 131, 242)',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
 					flexDirection: 'column',
 					padding: 30,
 				}}
+				className="flex flex-col space-y-4"
 			>
 				<Pie percentage={change} colour="rgb(10, 131, 242)" />
-				<ConsumptionLevel title="2.81 kWH" subtitle="In-House" />
-				<ConsumptionLevel title="4.43 kWH" subtitle="Buy" />
-				<ConsumptionLevel title="25.69 kWH" subtitle="Sell" />
-				<ConsumptionLevel title="7.24 kWH" subtitle="Load Consumption" />
+				<ConsumptionLevel unit="kWH" value={2.81} title="In-House" />
+				<ConsumptionLevel unit="kWH" value={4.43} title="Buy" />
+				<ConsumptionLevel unit="kWH" value={25.69} title="Sell" />
+				<ConsumptionLevel unit="kWH" value={7.24} title="Load Consumption" />
 			</div>
 		</AbsoluteFill>
 	);
