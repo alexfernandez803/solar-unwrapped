@@ -1,6 +1,6 @@
 import {useCurrentFrame, useVideoConfig} from 'remotion';
 import {interpolate} from 'remotion/no-react';
-import type {TradingChart} from './types';
+import type {TradingChartProps} from './types';
 import {ChartComponent} from './Chart';
 
 export type LogicalSelection = {
@@ -8,10 +8,11 @@ export type LogicalSelection = {
 	to: number;
 };
 
-const SolarChartComposition: React.FC<TradingChart> = ({
+const SolarChartComposition: React.FC<TradingChartProps> = ({
 	data,
 	userSelection,
 	token,
+	theme,
 }) => {
 	const frame = useCurrentFrame();
 	const {durationInFrames, width, height} = useVideoConfig();
@@ -60,7 +61,7 @@ const SolarChartComposition: React.FC<TradingChart> = ({
 			highestValue={highestValue}
 			height={height}
 			width={width}
-			token={token}
+			theme={theme}
 		/>
 	);
 };

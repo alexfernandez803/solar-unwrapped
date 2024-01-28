@@ -1,4 +1,4 @@
-import {faker} from '@faker-js/faker';
+import {da, faker} from '@faker-js/faker';
 import {DataPoint} from './types';
 
 export function formatDate(date: Date): string {
@@ -53,5 +53,25 @@ export function generateDataPointData(
 		}
 	}
 
+	console.log('data', data);
 	return data;
 }
+
+export type Dimensions = {
+	width: number;
+	height: number;
+};
+export const verticalDimensions: Dimensions = {
+	width: 1080,
+	height: 1920,
+};
+
+export const horizontalDimensions: Dimensions = {
+	width: 1920,
+	height: 1080,
+};
+
+export const squareDimensions: Dimensions = {
+	width: 1080,
+	height: 1080,
+};

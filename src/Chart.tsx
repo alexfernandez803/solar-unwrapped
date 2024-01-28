@@ -1,7 +1,7 @@
 import {AbsoluteFill} from 'remotion';
 import {createChart, ColorType, CrosshairMode} from 'lightweight-charts';
 import React, {useEffect, useRef} from 'react';
-import type {DataPoint} from './types';
+import type {ChartProps, DataPoint} from './types';
 
 export type Colors = {
 	backgroundColor: string;
@@ -22,36 +22,26 @@ const getData = (data: DataPoint[], token: string) => {
 		)}</div>
     <div>${dateStr}</div>`;
 };
-export const ChartComponent: React.FC<{
-	data: DataPoint[];
-	currentData: DataPoint[];
-	colors?: Colors;
-	lowestValue: number;
-	highestValue: number;
-	height?: number;
-	width?: number;
-	fontSize?: number;
-	token: string;
-}> = ({
+export const ChartComponent: React.FC<ChartProps> = ({
 	data,
 	height = 484,
 	width = 840,
-	colors = {
+	theme = {
 		backgroundColor: '#18181b',
 		lineColor: '#00f8b2',
 		textColor: 'white',
 		areaTopColor: '#00f8b2',
 		areaBottomColor: '#00f8b220',
+		fontFamily: 'sans-serif',
+		fontSize: 14,
 	},
 	lowestValue,
 	highestValue,
 	currentData,
-	fontSize = 14,
-	token,
 }) => {
 	const chartContainerRef = useRef<HTMLDivElement | null>(null);
 
-	const toolTipContent = getData(currentData, token);
+	// Const toolTipContent = getData(currentData, token);
 
 	const interactiveOptions = {
 		handleScroll: {
@@ -77,8 +67,7 @@ export const ChartComponent: React.FC<{
 			vertLine: {
 				visible: false,
 				style: 0,
-
-				color: 'rgba(32, 38, 46, 0.1)',
+				color: theme.vertLineColor,
 				labelVisible: false,
 			},
 		},
@@ -94,18 +83,14 @@ export const ChartComponent: React.FC<{
 		const chart = createChart(chartContainerRef.current, {
 			...interactiveOptions,
 			layout: {
-				background: {type: ColorType.Solid, color: colors.backgroundColor},
-				textColor: colors.textColor,
-				fontFamily: 'sans-serif',
-				fontSize,
+				background: {type: ColorType.Solid, color: theme.backgroundColor},
+				textColor: theme.textColor,
+				fontFamily: theme.fontFamily,
+				fontSize: theme.fontSize,
 			},
 
 			timeScale: {
 				uniformDistribution: true,
-				// TickMarkFormatter: (time) => {
-				//   const date = new Date(time).toLocaleDateString();
-				//   return date;
-				// }
 			},
 			grid: {
 				vertLines: {
@@ -121,9 +106,10 @@ export const ChartComponent: React.FC<{
 		});
 
 		const newSeries = chart.addAreaSeries({
-			lineColor: colors.lineColor,
-			topColor: colors.areaTopColor,
-			bottomColor: colors.areaBottomColor,
+			lineColor: theme.lineColor,
+			topColor: theme.areaTopColor,
+			bottomColor: theme.areaBottomColor,
+			lineWidth: 3,
 			priceLineVisible: false,
 			autoscaleInfoProvider: (original) => {
 				const res = original();
@@ -133,34 +119,48 @@ export const ChartComponent: React.FC<{
 			},
 		});
 		newSeries.setData(currentData);
-
 		chart.timeScale().setVisibleLogicalRange({from: 0, to: data.length - 1});
 
-		window.addEventListener('resize', handleResize);
+		const histogramSeries = chart.addHistogramSeries({color: '#26a69a'});
 
+		const data2 = [
+			{value: 1, time: 1642425322},
+			{value: 8, time: 1642511722},
+			{value: 10, time: 1642598122},
+			{value: 20, time: 1642684522},
+			{value: 3, time: 1642770922, color: 'red'},
+			{value: 43, time: 1642857322},
+			{value: 41, time: 1642943722, color: 'red'},
+			{value: 43, time: 1643030122},
+			{value: 56, time: 1643116522},
+			{value: 46, time: 1643202922, color: 'red'},
+		];
+
+		histogramSeries.setData(data2);
+
+		const lineSeries = chart.addLineSeries({color: '#2962FF'});
+
+		const data3 = [
+			{value: 0, time: 1642425322},
+			{value: 8, time: 1642511722},
+			{value: 10, time: 1642598122},
+			{value: 20, time: 1642684522},
+			{value: 3, time: 1642770922},
+			{value: 43, time: 1642857322},
+			{value: 41, time: 1642943722},
+			{value: 43, time: 1643030122},
+			{value: 56, time: 1643116522},
+			{value: 46, time: 1643202922},
+		];
+
+		lineSeries.setData(data3);
+
+		window.addEventListener('resize', handleResize);
 		return () => {
 			window.removeEventListener('resize', handleResize);
 			chart.remove();
 		};
 	}, [data, lowestValue, highestValue]);
 
-	return (
-		<AbsoluteFill ref={chartContainerRef}>
-			<div
-				// eslint-disable-next-line react/no-danger
-				dangerouslySetInnerHTML={{__html: toolTipContent}}
-				style={{
-					width: 'auto',
-					height: '70px',
-					position: 'absolute',
-					padding: '8px',
-					fontSize: '12px',
-					color: 'white',
-					textAlign: 'left',
-					zIndex: 1000,
-					pointerEvents: 'none',
-				}}
-			/>
-		</AbsoluteFill>
-	);
+	return <AbsoluteFill ref={chartContainerRef} />;
 };

@@ -1,34 +1,5 @@
+import {zColor} from '@remotion/zod-types';
 import {z} from 'zod';
-
-const SongSchema = z.object({
-	title: z.string(),
-	artist: z.string(),
-	year: z.number(),
-	songVideoPreviewUrl: z.string(),
-});
-
-export const ChapterCompostionSchema = z.object({
-	videoUrl: z.string(),
-	fontFamily: z.string(),
-	songs: SongSchema.array(),
-	title: z.string(),
-});
-
-const JokeSchema = z.object({
-	source: z.string().default('Facebook'),
-	previewUrl: z.string(),
-	durationInFrames: z.number().default(160),
-	startScale: z.number().optional(),
-});
-
-export const DadJokesCompositionSchema = z.object({
-	videoUrl: z.string(),
-	fontFamily: z.string(),
-	bgMusicURL: z.string(),
-	title: z.string(),
-	jokes: JokeSchema.array(),
-	jokesDuration: z.number(),
-});
 
 export const DateValueSchema = z.object({
 	dateTime: z.string(),
@@ -36,8 +7,6 @@ export const DateValueSchema = z.object({
 });
 
 export type DateValue = z.infer<typeof DateValueSchema>;
-
-export type Song = z.infer<typeof SongSchema>;
 
 export const dataPointSchema = z.object({
 	time: z.string(),
@@ -49,13 +18,37 @@ export const logicalSelectionSchema = z.object({
 	to: z.number(),
 });
 
-export const tradingChartSchema = z.object({
-	data: z.array(dataPointSchema),
-	token: z.string(),
-	userSelection: logicalSelectionSchema,
+export const themeSchema = z.object({
+	backgroundColor: zColor().optional(),
+	lineColor: zColor().optional(),
+	textColor: zColor().optional(),
+	areaTopColor: zColor().optional(),
+	areaBottomColor: zColor().optional(),
+	fontFamily: z.string().optional(),
+	fontSize: z.number().optional(),
+	vertLineColor: zColor().optional(),
 });
 
-export type TradingChart = z.infer<typeof tradingChartSchema>;
+export const tradingChartSchema = z.object({
+	data: z.array(dataPointSchema),
+	userSelection: logicalSelectionSchema,
+	theme: themeSchema.optional(),
+});
+
+const chartSchema = z.object({
+	data: z.array(dataPointSchema),
+	currentData: z.array(dataPointSchema),
+	theme: themeSchema.optional(),
+	lowestValue: z.number(),
+	highestValue: z.number(),
+	height: z.number().optional(),
+	width: z.number().optional(),
+	fontSize: z.number().optional(),
+});
+
+export type TradingChartProps = z.infer<typeof tradingChartSchema>;
+
+export type ChartProps = z.infer<typeof chartSchema>;
 
 export type DataPoint = z.infer<typeof dataPointSchema>;
 
