@@ -4,6 +4,7 @@ import {SolarPercentageComposition} from './SolarPercentageComposition';
 import {tradingChartSchema} from './types';
 import {squareDimensions} from './utils';
 import './styles.css';
+import {PlotlyChartComposition} from './PlotlyChartComposition';
 export const RemotionRoot: React.FC = () => {
 	return (
 		<>
@@ -16,6 +17,14 @@ export const RemotionRoot: React.FC = () => {
 				height={squareDimensions.height}
 			/>
 
+			<Composition
+				id="solar-chart"
+				component={PlotlyChartComposition}
+				durationInFrames={1260 / 4}
+				fps={30}
+				width={squareDimensions.width}
+				height={squareDimensions.height}
+			/>
 			<Composition
 				id="main"
 				component={SolarChartComposition}
